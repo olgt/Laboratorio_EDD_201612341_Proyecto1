@@ -10,14 +10,14 @@ void menuEditarNivel::mostrarMenuEdicion(Arbol_AVL* arbolProyectos, Arbol_Binari
     NodoArbol* proyectoActual = arbolProyectos->getProyecto(idProyecto, arbolProyectos->getRaiz());
     Lista_Niveles* listaNivelesActual = proyectoActual->getListaNiveles();
     string opciones[] = {"2.1. Agregar Nivel", "2.2. Editar Nivel", "2.3. Eliminar Nivel",
-                         "2.4. Eliminar Proyecto", "2.5. Salir"};
+                         "2.4. Eliminar Proyecto", "2.5. Crear Cantidad Pisos", "2.6. Salir"};
 
     bool isContinue = true;
     int opcion = 0;
 
     while(isContinue != false){
         imprimirEncabezado();
-        for(int i = 0; i < 5 ; i++){
+        for(int i = 0; i < 6 ; i++){
             cout << opciones[i] << endl;
         }
 
@@ -73,6 +73,12 @@ void menuEditarNivel::mostrarMenuEdicion(Arbol_AVL* arbolProyectos, Arbol_Binari
 
         }
         if(opcion == 5){
+            crearNiveles(listaNivelesActual, arbolObjetos);
+            imprimirEspacios(10);
+
+
+        }
+        if(opcion == 6){
             isContinue = false;
         }
      }
@@ -89,3 +95,22 @@ void menuEditarNivel::eliminarNivelMenu(Lista_Niveles* listaNivelesActual,int id
 
 }
 
+void menuEditarNivel::crearNiveles(Lista_Niveles *listaNiveles, Arbol_Binario* arbolObjetos){
+    int noNiveles = 0;
+    int noUltimoNivel;
+    cout << "Ingrese Cantidad de Pisos: ";
+    cin >> noNiveles;
+    noUltimoNivel = listaNiveles->getTail()->getId();
+
+    for(int i = noUltimoNivel+1; i<noUltimoNivel+noNiveles; i++){
+
+        Nodo_Nivel* nuevo = new Nodo_Nivel(i, NULL, arbolObjetos);
+
+        Matriz* nuevaMatriz = new Matriz();
+        nuevo->setMatriz(nuevaMatriz);
+
+        listaNiveles->addNode(nuevo);
+    }
+
+
+}

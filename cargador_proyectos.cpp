@@ -16,10 +16,10 @@ Arbol_AVL* Cargador_Proyectos::cargarNuevo(string nombreArchivo, Arbol_Binario* 
 
     json j;
 
-
     try {
-        string archivo= "./" + nombreArchivo + ".json";
-        ifstream reader(archivo);
+        string archivo= nombreArchivo + ".json";
+        ifstream reader;
+        reader.open(archivo);
         reader>>j;
         reader.close();
         cout << endl << "Proyectos Cargados exitosamente" << endl;
@@ -255,7 +255,7 @@ Arbol_Binario* Cargador_Proyectos::cargarLibrerias(string nombreArchivo){
     json j;
 
     try {
-        string archivo= "./" + nombreArchivo + ".json";
+        string archivo= nombreArchivo + ".json";
         ifstream reader(archivo);
         reader>>j;
         reader.close();
@@ -363,7 +363,7 @@ void Cargador_Proyectos::agregarNivelExtra(Lista_Niveles *listaActual, Arbol_Bin
 
 
     try {
-        string archivo= "./" + nombreArchivo + ".json";
+        string archivo= nombreArchivo + ".json";
         ifstream reader(archivo);
         reader>>jasonFile;
         reader.close();

@@ -33,7 +33,7 @@ public:
     void copiarNivel();
     void crearCantidadPisos();
     void moveObjeto();
-    Nodo_Objeto* metodoGiro(Nodo_Binario* nodoAgregar, int x, int y, int grados);
+    Nodo_Objeto* metodoGiro(Nodo_Binario* nodoAgregar, Nodo_Nivel* nivelActual, int x, int y, int grados);
     Nodo_Objeto* girar45(Nodo_Nivel* nodoActual, int size, int x, int y, int xInicialObjeto, int yInicialObjeto,int posX, int posY,
                   Lista_Puntos* listaActualPuntos, int veces, int &vezActual, int id, string objeto,
                   char letra, string color);

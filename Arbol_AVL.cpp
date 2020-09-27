@@ -270,8 +270,10 @@ NodoArbol* Arbol_AVL::getRaiz(){
 
 void Arbol_AVL::crearGrafica(){
     NodoArbol* aux = this->raiz;
+    string nombreArchivo = "./Imagenes/AVLGrafica.gv";
+    string nombreGrafica = "./Imagenes/AVLGrafica.ps";
 
-    ofstream MyFile("AVLGrafica.gv");
+    ofstream MyFile(nombreArchivo);
     MyFile << "digraph G {";
     MyFile << "\n";
     MyFile << "rankdir = TB; \n";
@@ -285,7 +287,7 @@ void Arbol_AVL::crearGrafica(){
     MyFile.close();
     try {
         cout << "Creating" << endl;
-        system("dot -Tps AVLGrafica.gv -o AVLGrafica.ps");
+        system(("dot -Tps " + nombreArchivo + " -o " + nombreGrafica).c_str());
     } catch (exception e) {
         cout << "error occurred" << endl;
     }

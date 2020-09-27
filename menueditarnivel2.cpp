@@ -21,9 +21,13 @@ void menuEditarNivel2::mostrarNiveles(){
 
     cout << "Ingrese Nivel a Editar: ";
     cin >> idNivel;
-    graficarNivel(idNivel);
 
     Nodo_Nivel* nivelActual = this->proyecto->getListaNiveles()->getNodo(idNivel);
+
+    if(nivelActual->getMatriz() != NULL){
+        graficarNivel(idNivel);
+    }
+
 
     imprimirEspacios(10);
 
@@ -80,7 +84,9 @@ void menuEditarNivel2::mostrarNiveles(){
 void menuEditarNivel2::graficarNivel(int id){
     string nombre = "Proyecto_" + this->proyecto->getName() + "_Nivel" + to_string(id);
     Matriz* matrizActual = this->proyecto->getListaNiveles()->getNodo(id)->getMatriz();
-    matrizActual->crearGrafica(nombre);
+    if(matrizActual != NULL){
+        matrizActual->crearGrafica(nombre);
+    }
 }
 
 void menuEditarNivel2::agregarObjeto(Nodo_Nivel* nivelActual){
@@ -120,8 +126,12 @@ void menuEditarNivel2::agregarObjeto(Nodo_Nivel* nivelActual){
     int posNuevaY45;
 
     //Agregamos al ABB del nivel (Jalamos del universal)
+
     nivelActual->getABB()->insertar(id, objeto, letra, color, listaActualPuntos);
-    nivelActual->getABB()->crearGrafica(this->proyecto->getName(), nivelActual->getId());
+
+    if(nivelActual->getABB() != NULL){
+        nivelActual->getABB()->crearGrafica(this->proyecto->getName(), nivelActual->getId());
+    }
 
 
     if(grados == 0){
@@ -336,7 +346,7 @@ void menuEditarNivel2::agregarObjeto(Nodo_Nivel* nivelActual){
 
 }
 
-Nodo_Objeto* menuEditarNivel2::metodoGiro(Nodo_Binario* nodoAgregar, int x, int y, int grados){
+Nodo_Objeto* menuEditarNivel2::metodoGiro(Nodo_Binario* nodoAgregar, Nodo_Nivel* nivelActual, int x, int y, int grados){
 
     int xInicialObjeto, yInicialObjeto;
     string objeto, color;
@@ -372,8 +382,7 @@ Nodo_Objeto* menuEditarNivel2::metodoGiro(Nodo_Binario* nodoAgregar, int x, int 
         }
     }
 
-    //girar45(size, x, y, xInicialObjeto, yInicialObjeto, posX, posY, listaActualPuntos, veces, vezActual, id, objeto, letra, color);
-
+    girar45(nivelActual, size, x, y, xInicialObjeto, yInicialObjeto, posX, posY, listaActualPuntos, veces, vezActual, id, objeto, letra, color);
 }
 
 Nodo_Objeto* menuEditarNivel2::girar45(Nodo_Nivel* nivelActual, int size, int x, int y, int xInicialObjeto, int yInicialObjeto,int posX, int posY,
@@ -382,84 +391,162 @@ Nodo_Objeto* menuEditarNivel2::girar45(Nodo_Nivel* nivelActual, int size, int x,
     int posNuevaX45;
     int posNuevaY45;
 
-    for(int i = 0; i < size; i++){
-        //Comenzamos a rotar
-        if(i != 0){
-            int diferenciaX = listaActualPuntos->getPunto(i)->getX() - xInicialObjeto;
-            int diferenciaY = listaActualPuntos->getPunto(i)->getY() - yInicialObjeto;
-            Nodo_Puntos* nodoPuntosActual = listaActualPuntos->getPunto(i);
-            Nodo_Puntos* nodoSiguiente = listaActualPuntos->getPunto(i+1);
-            Nodo_Puntos* nodoAnterior = listaActualPuntos->getPunto(i-1);
+    if(vezActual<1){
+        for(int i = 0; i < size; i++){
+            //Comenzamos a rotar
+            if(i != 0){
+                int diferenciaX = listaActualPuntos->getPunto(i)->getX() - xInicialObjeto;
+                int diferenciaY = listaActualPuntos->getPunto(i)->getY() - yInicialObjeto;
+                Nodo_Puntos* nodoPuntosActual = listaActualPuntos->getPunto(i);
+                Nodo_Puntos* nodoSiguiente = listaActualPuntos->getPunto(i+1);
+                Nodo_Puntos* nodoAnterior = listaActualPuntos->getPunto(i-1);
 
-            //Rotaciones cuando esta inclinado 45 grados
-            if(abs(diferenciaX) == abs(diferenciaY)){
-                if(nodoAnterior!= NULL && nodoAnterior->getX() != nodoPuntosActual->getX()
-                        && nodoAnterior->getY() == nodoPuntosActual->getY()){
-                    if(diferenciaX < 0){
-                        posNuevaX45 = x - abs(diferenciaX) + 1;
-                        posNuevaY45 = y + abs(diferenciaX) + 1;
-                    }if(diferenciaX > 0){
-                        posNuevaX45 = x + abs(diferenciaX) + 1;
-                        posNuevaY45 = y + abs(diferenciaX) - 1;
+                //Rotaciones cuando esta inclinado 45 grados
+                if(abs(diferenciaX) == abs(diferenciaY)){
+                    if(nodoAnterior!= NULL && nodoAnterior->getX() != nodoPuntosActual->getX()
+                            && nodoAnterior->getY() == nodoPuntosActual->getY()){
+                        if(diferenciaX < 0){
+                            posNuevaX45 = x - abs(diferenciaX) + 1;
+                            posNuevaY45 = y + abs(diferenciaX) + 1;
+                        }if(diferenciaX > 0){
+                            posNuevaX45 = x + abs(diferenciaX) + 1;
+                            posNuevaY45 = y + abs(diferenciaX) - 1;
+                        }
                     }
+                    else if(diferenciaY > 0){ //El Nodo Actual esta a la derecha del inicio
+                        if(diferenciaX > 0){ //Nodo Actual esta abajo (mayor)
+                            posNuevaY45 = y;
+                            posNuevaX45 = x + diferenciaX;
+                        }
+                        if(diferenciaX < 0){ //Nodo Actual esta arriba (menor)
+                            posNuevaX45 = x;
+                            posNuevaY45 = y + abs(diferenciaY);
+                        }
+                        if(diferenciaX == 0){ //Nodo Actual Y es mayor ^ Mismo Nivel X
+                            posNuevaX45 = x + abs(diferenciaX);
+                            posNuevaY45 = y + abs(diferenciaY);
+                        }
+
+                    }
+                    else if(diferenciaY < 0){ //El Nodo Actual esta a la izquierda del inicio
+                        if(diferenciaX > 0){ //Nodo Actual esta abajo (Mayor)
+                            posNuevaY45 = y - abs(diferenciaY);
+                            posNuevaX45 = x;
+                        }
+                        if(diferenciaX < 0){ //Nodo Actual esta arriba(menor)
+                            posNuevaX45 = x - abs(diferenciaX);
+                            posNuevaY45 = y;
+                        }
+                    }
+
                 }
-                else if(diferenciaY > 0){ //El Nodo Actual esta a la derecha del inicio
-                    if(diferenciaX > 0){ //Nodo Actual esta abajo (mayor)
-                        posNuevaY45 = y;
-                        posNuevaX45 = x + diferenciaX;
-                    }
-                    if(diferenciaX < 0){ //Nodo Actual esta arriba (menor)
-                        posNuevaX45 = x;
+                //Rotaciones cuando esta en algun plano x o y
+                else if(diferenciaX == 0){
+                    if(diferenciaY > 0){
                         posNuevaY45 = y + abs(diferenciaY);
+                        posNuevaX45 = x + abs(diferenciaY);
                     }
-
-                }
-                else if(diferenciaY < 0){ //El Nodo Actual esta a la izquierda del inicio
-                    if(diferenciaX > 0){ //Nodo Actual esta abajo (Mayor)
+                    if(diferenciaY < 0){
+                        posNuevaX45 = x - abs(diferenciaY);
                         posNuevaY45 = y - abs(diferenciaY);
-                        posNuevaX45 = x;
                     }
-                    if(diferenciaX < 0){ //Nodo Actual esta arriba(menor)
+                }
+                else if(diferenciaY == 0){
+                    if(diferenciaX > 0){
+                        posNuevaY45 = y - abs(diferenciaX);
+                        posNuevaX45 = x + abs(diferenciaX);
+                    }
+                    if(diferenciaX < 0){
                         posNuevaX45 = x - abs(diferenciaX);
-                        posNuevaY45 = y;
+                        posNuevaY45 = y + abs(diferenciaX);
                     }
                 }
 
+            } else {
+                posNuevaX45 = posX;
+                posNuevaY45 = posY;
             }
-            //Rotaciones cuando esta en algun plano x o y
-            else if(diferenciaX == 0){
-                if(diferenciaY > 0){
-                    posNuevaY45 = y + abs(diferenciaY);
-                    posNuevaX45 = x + abs(diferenciaY);
-                }
-                if(diferenciaY < 0){
-                    posNuevaX45 = x - abs(diferenciaY);
-                    posNuevaY45 = y - abs(diferenciaY);
-                }
-            }
-            else if(diferenciaY == 0){
-                if(diferenciaX > 0){
-                    posNuevaY45 = y - abs(diferenciaX);
-                    posNuevaX45 = x + abs(diferenciaX);
-                }
+           }
+
+    }/*
+    else {
+        int diferenciaX = listaActualPuntos->getPunto(i)->getX() - xInicialObjeto;
+        int diferenciaY = listaActualPuntos->getPunto(i)->getY() - yInicialObjeto;
+        Nodo_Puntos* nodoPuntosActual = listaActualPuntos->getPunto(i);
+        Nodo_Puntos* nodoSiguiente = listaActualPuntos->getPunto(i+1);
+        Nodo_Puntos* nodoAnterior = listaActualPuntos->getPunto(i-1);
+
+        //Rotaciones cuando esta inclinado 45 grados
+        if(abs(diferenciaX) == abs(diferenciaY)){
+            if(nodoAnterior!= NULL && nodoAnterior->getX() != nodoPuntosActual->getX()
+                    && nodoAnterior->getY() == nodoPuntosActual->getY()){
                 if(diferenciaX < 0){
+                    posNuevaX45 = x - abs(diferenciaX) + 1;
+                    posNuevaY45 = y + abs(diferenciaX) + 1;
+                }if(diferenciaX > 0){
+                    posNuevaX45 = x + abs(diferenciaX) + 1;
+                    posNuevaY45 = y + abs(diferenciaX) - 1;
+                }
+            }
+            else if(diferenciaY > 0){ //El Nodo Actual esta a la derecha del inicio
+                if(diferenciaX > 0){ //Nodo Actual esta abajo (mayor)
+                    posNuevaY45 = y;
+                    posNuevaX45 = x + diferenciaX;
+                }
+                if(diferenciaX < 0){ //Nodo Actual esta arriba (menor)
+                    posNuevaX45 = x;
+                    posNuevaY45 = y + abs(diferenciaY);
+                }
+                if(diferenciaX == 0){ //Nodo Actual Y es mayor ^ Mismo Nivel X
+                    posNuevaX45 = x + abs(diferenciaX);
+                    posNuevaY45 = y + abs(diferenciaY);
+                }
+
+            }
+            else if(diferenciaY < 0){ //El Nodo Actual esta a la izquierda del inicio
+                if(diferenciaX > 0){ //Nodo Actual esta abajo (Mayor)
+                    posNuevaY45 = y - abs(diferenciaY);
+                    posNuevaX45 = x;
+                }
+                if(diferenciaX < 0){ //Nodo Actual esta arriba(menor)
                     posNuevaX45 = x - abs(diferenciaX);
-                    posNuevaY45 = y + abs(diferenciaX);
+                    posNuevaY45 = y;
                 }
             }
 
-        } else {
-            posNuevaX45 = posX;
-            posNuevaY45 = posY;
         }
-       }
+        //Rotaciones cuando esta en algun plano x o y
+        else if(diferenciaX == 0){
+            if(diferenciaY > 0){
+                posNuevaY45 = y + abs(diferenciaY);
+                posNuevaX45 = x + abs(diferenciaY);
+            }
+            if(diferenciaY < 0){
+                posNuevaX45 = x - abs(diferenciaY);
+                posNuevaY45 = y - abs(diferenciaY);
+            }
+        }
+        else if(diferenciaY == 0){
+            if(diferenciaX > 0){
+                posNuevaY45 = y - abs(diferenciaX);
+                posNuevaX45 = x + abs(diferenciaX);
+            }
+            if(diferenciaX < 0){
+                posNuevaX45 = x - abs(diferenciaX);
+                posNuevaY45 = y + abs(diferenciaX);
+            }
+        }
+
+    }
+    */
+
     if(vezActual >= veces){
         Nodo_Objeto* nodoAgregado = new Nodo_Objeto(id, objeto, letra, color, posNuevaX45, posNuevaY45);
         nivelActual->getMatriz()->add(nodoAgregado);
         return nodoAgregado;
     } else {
         vezActual++;
-        girar45(nivelActual, size, x, y, xInicialObjeto, yInicialObjeto, posX, posY, listaActualPuntos, veces, vezActual, id, objeto, letra, color);
+        girar45(nivelActual, size, posNuevaX45, posNuevaY45, xInicialObjeto, yInicialObjeto, posX, posY, listaActualPuntos, veces, vezActual, id, objeto, letra, color);
     }
 }
 

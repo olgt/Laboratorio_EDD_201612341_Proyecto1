@@ -19,6 +19,7 @@ public:
     menuEditarNivel();
     void mostrarMenuEdicion(Arbol_AVL* proyecto, Arbol_Binario* arbolObjetos, int idProyecto);
     void eliminarNivelMenu(Lista_Niveles* listaNiveles, int idNivel);
+    void crearNiveles(Lista_Niveles* listaNiveles, Arbol_Binario* arbolObjetos);
 };
 
 #endif // MENUEDITARNIVEL_H

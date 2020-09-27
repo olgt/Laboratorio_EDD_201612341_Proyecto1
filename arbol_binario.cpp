@@ -154,8 +154,8 @@ void Arbol_Binario::insertar(int id, string nombre, char letra, string color, Li
 void Arbol_Binario::crearGrafica(string nombreProyecto, int idNivel){
     Nodo_Binario* aux = this->getRaiz();
 
-    string nombreArchivo = nombreProyecto + "_Nivel_" + to_string(idNivel) + "_ABB" + ".gv";
-    string nombreGrafica = nombreProyecto + "_Nivel_" + to_string(idNivel) + "_ABB" + ".ps";
+    string nombreArchivo = "./Imagenes/" + nombreProyecto + "_Nivel_" + to_string(idNivel) + "_ABB" + ".gv";
+    string nombreGrafica = "./Imagenes/" + nombreProyecto + "_Nivel_" + to_string(idNivel) + "_ABB" + ".ps";
 
     cout << "ARBOL BINARIO" << endl;
     ofstream MyFile(nombreArchivo);
@@ -175,12 +175,13 @@ void Arbol_Binario::crearGrafica(string nombreProyecto, int idNivel){
         }
     }
 
-    cout << "Done";
+    cout << "Done, ";
     MyFile << "}";
     MyFile.close();
     try {
-        cout << "Creating" << endl;
+        cout << "Creating, " << endl;
         system(("dot -Tps " + nombreArchivo + " -o " + nombreGrafica).c_str());
+        cout << "Graph Done";
     } catch (exception e) {
         cout << "Oscar error occurred" << endl;
     }

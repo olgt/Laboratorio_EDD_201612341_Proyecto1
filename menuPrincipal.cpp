@@ -75,7 +75,12 @@ void MenuPrincipal::imprimirMenu(){
         }
         if(opcion == 5){
             Cargador_Save* nuevoSaver = new Cargador_Save(arbolProyectos, arbolObjetos);
-            nuevoSaver->guardarProyectos();
+            if(arbolProyectos != NULL && arbolObjetos != NULL){
+                nuevoSaver->guardarProyectos();
+            }
+            else {
+                cout << "No hay proyectos proyectos cargados" << endl;
+            }
         }
         if(opcion == 6){
             Cargador_Proyectos cargador;
@@ -94,8 +99,12 @@ void MenuPrincipal::imprimirMenu(){
             imprimirEspacios(10);
         }
         if(opcion == 7){
-            cargadorReportes* cargador = new cargadorReportes(arbolProyectos, arbolObjetos);
-            cargador->mostrarOpciones();
+            if(arbolProyectos != NULL && arbolObjetos != NULL){
+                cargadorReportes* cargador = new cargadorReportes(arbolProyectos, arbolObjetos);
+                cargador->mostrarOpciones();
+            } else {
+                cout << "No hay proyectos proyectos cargados" << endl;
+            }
 
         }
         if(opcion == 8){
