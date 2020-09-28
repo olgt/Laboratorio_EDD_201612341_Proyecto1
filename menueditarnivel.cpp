@@ -102,7 +102,7 @@ void menuEditarNivel::crearNiveles(Lista_Niveles *listaNiveles, Arbol_Binario* a
     cin >> noNiveles;
     noUltimoNivel = listaNiveles->getTail()->getId();
 
-    for(int i = noUltimoNivel+1; i<noUltimoNivel+noNiveles; i++){
+    for(int i = noUltimoNivel+1; i<noUltimoNivel+noNiveles+1; i++){
 
         Nodo_Nivel* nuevo = new Nodo_Nivel(i, NULL, arbolObjetos);
 

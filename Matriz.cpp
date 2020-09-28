@@ -355,7 +355,7 @@ void Matriz::crearGrafica(string nombre){
             MyFile << "} \n";
             horizontal = this->horizontal;
 
-              //RANKS Nodos Matris y Cabecera "Y"
+              //RANKS Nodos Matris y Cabecera "Y" (Creamos Nodos)
               while(aux2 != NULL){
                   MyFile << "{ \n";
                   MyFile << "rank=same; ";

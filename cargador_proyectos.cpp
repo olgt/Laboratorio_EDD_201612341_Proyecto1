@@ -235,13 +235,30 @@ Lista_Puntos* Cargador_Proyectos::cargarCoordenadasObjetosProyecto(json jasonFil
 
         int xEnJason = jasonFile["proyectos"][indiceProyecto]["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][j]["x"];
         int yEnJason = jasonFile["proyectos"][indiceProyecto]["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][j]["y"];
+        int xInicio = jasonFile["proyectos"][indiceProyecto]["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][0]["x"];
+        int yInicio = jasonFile["proyectos"][indiceProyecto]["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][0]["y"];
 
-        Nodo_Puntos* nodoXY = new Nodo_Puntos(xEnJason, yEnJason);
-        nodoXY->setSiguiente(NULL);
+        if(nuevaListaPuntos->gethead() != NULL){
+            int xNueva = xEnJason - xInicio;
+            int yNueva = yEnJason - yInicio;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
 
-        cout << "Insertando Coordenadas: " << xEnJason << ", " << yEnJason << endl;
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
 
-        nuevaListaPuntos->addNode(nodoXY);
+            nuevaListaPuntos->addNode(nodoXY);
+
+        } else {
+            int xNueva = 0;
+            int yNueva = 0;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
+
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
+
+            nuevaListaPuntos->addNode(nodoXY);
+
+        }
     }
     return nuevaListaPuntos;
 }
@@ -315,12 +332,30 @@ Lista_Puntos* Cargador_Proyectos::cargarCoordenadas(json jasonFile, int indiceOb
 
         int xEnJason = jasonFile["Libreria"][indiceObjeto]["puntos"][j]["x"];
         int yEnJason = jasonFile["Libreria"][indiceObjeto]["puntos"][j]["y"];
+        int xInicio = jasonFile["Libreria"][indiceObjeto]["puntos"][0]["x"];
+        int yInicio = jasonFile["Libreria"][indiceObjeto]["puntos"][0]["y"];
 
-        Nodo_Puntos* nodoXY = new Nodo_Puntos(xEnJason, yEnJason);
+        if(nuevaListaPuntos->gethead() != NULL){
+            int xNueva = xEnJason - xInicio;
+            int yNueva = yEnJason - yInicio;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
 
-        cout << "Insertando Coordenadas: " << xEnJason << ", " << yEnJason << endl;
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
 
-        nuevaListaPuntos->addNode(nodoXY);
+            nuevaListaPuntos->addNode(nodoXY);
+
+        } else {
+            int xNueva = 0;
+            int yNueva = 0;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
+
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
+
+            nuevaListaPuntos->addNode(nodoXY);
+
+        }
     }
     return nuevaListaPuntos;
 }
@@ -475,13 +510,32 @@ Lista_Puntos* Cargador_Proyectos::cargarCoordenadasObjetosExtraNivel(json jasonF
 
         int xEnJason = jasonFile["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][j]["x"];
         int yEnJason = jasonFile["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][j]["y"];
+        int xInicio = jasonFile["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][0]["x"];
+        int yInicio = jasonFile["niveles"][indiceNivel]["objetos"][indiceObjeto]["puntos"][0]["y"];
 
-        Nodo_Puntos* nodoXY = new Nodo_Puntos(xEnJason, yEnJason);
-        nodoXY->setSiguiente(NULL);
+        if(nuevaListaPuntos->gethead() != NULL){
+            int xNueva = xEnJason - xInicio;
+            int yNueva = yEnJason - yInicio;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
 
-        cout << "Insertando Coordenadas: " << xEnJason << ", " << yEnJason << endl;
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
 
-        nuevaListaPuntos->addNode(nodoXY);
+            nuevaListaPuntos->addNode(nodoXY);
+
+        } else {
+            int xNueva = 0;
+            int yNueva = 0;
+            Nodo_Puntos* nodoXY = new Nodo_Puntos(xNueva, yNueva);
+            nodoXY->setSiguiente(NULL);
+
+            cout << "Insertando Coordenadas: " << xNueva << ", " << yNueva << endl;
+
+            nuevaListaPuntos->addNode(nodoXY);
+
+        }
+
+
     }
     return nuevaListaPuntos;
 }
